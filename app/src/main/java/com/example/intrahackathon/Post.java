@@ -1,7 +1,7 @@
 package com.example.intrahackathon;
 
 public class Post {
-    User user;
+    String user;
     String[] comments;
     int upvotes;
     int downvotes;
@@ -10,7 +10,7 @@ public class Post {
     public Post() {
     }
 
-    public Post(User user, String[] comments, int upvotes, int downvotes, String imageUrl) {
+    public Post(String user, String[] comments, int upvotes, int downvotes, String imageUrl) {
         this.user = user;
         this.comments = comments;
         this.upvotes = upvotes;
