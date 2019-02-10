@@ -17,26 +17,31 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class login extends AppCompatActivity implements View.OnClickListener {
 
     private Button login;
-    private EditText email;
+    static EditText email;
     private EditText password;
     private TextView signup;
     private ProgressDialog progressDialog;
     private FirebaseAuth mAuth;
+    private FirebaseDatabase database;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
         login = (Button) findViewById(R.id.login);
         email = (EditText) findViewById(R.id.email);
         password = (EditText) findViewById(R.id.password);
         signup = (TextView) findViewById(R.id.sign);
         progressDialog = new ProgressDialog(this);
+
 
         if(mAuth.getCurrentUser() != null){
             // start profile acivity
@@ -49,7 +54,7 @@ public class login extends AppCompatActivity implements View.OnClickListener {
 
     public void userlogin() {
 
-        String mailId = email.getText().toString().trim();
+        final String mailId = email.getText().toString().trim();
         String pass = password.getText().toString().trim();
 
         if(TextUtils.isEmpty(mailId)){

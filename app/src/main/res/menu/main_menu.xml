@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/shareButton"
+        android:title="share"
+        app:showAsAction="always"
+        android:icon="@drawable/main_share"/>
     <item android:id="@+id/profile" android:title="Profile" android:contentDescription="Profile" app:showAsAction="always"
         android:icon="@drawable/person"
         />
     <item android:id="@+id/settings"
         android:title="settings"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         android:icon="@drawable/gear"/>
+    <item android:id="@+id/logoutButton"
+        android:title="Logout"
+        app:showAsAction="always"
+        android:icon="@drawable/logout"/>
+
 
 </menu>

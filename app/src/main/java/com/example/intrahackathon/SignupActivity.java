@@ -20,6 +20,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -29,7 +34,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private TextView login;
     private ProgressDialog progressDialog;
     private FirebaseAuth mAuth;
-
+    private FirebaseDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         email = (EditText) findViewById(R.id.email);
         password = (EditText) findViewById(R.id.password);
         login = (TextView) findViewById(R.id.login);
+        database = FirebaseDatabase.getInstance();
         FirebaseApp.initializeApp(this);
 
         mAuth = FirebaseAuth.getInstance();
@@ -51,7 +57,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void usersignup(){
-        String mailId = email.getText().toString().trim();
+        final String mailId = email.getText().toString().trim();
         String pass = password.getText().toString().trim();
 
         if(TextUtils.isEmpty(mailId)){
@@ -72,9 +78,15 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         progressDialog.dismiss();
                         if(task.isSuccessful()){
+                            DatabaseReference users = database.getReference("users").child(task.getResult().getUser().getUid().toString());
+                            User newuser = new User(users.getKey(), mailId, new ArrayList<String>(Arrays.asList("dummy"))
+                                    ,new ArrayList<String>(Arrays.asList("dummy")),
+                                    new ArrayList<String>(Arrays.asList("dummy"))
+                                    , 0);
+                            users.setValue(newuser);
                             //profile activity
-                            startActivity(new Intent(SignupActivity.this,MainActivity.class));
                             Toast.makeText(SignupActivity.this,"Registered successfully",Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(SignupActivity.this,MainActivity.class));
                         }
                         else{
                             Toast.makeText(SignupActivity.this,"Something happenned",Toast.LENGTH_SHORT).show();
